@@ -1,9 +1,10 @@
-package main
+package users
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/georgysavva/scany/pgxscan"
@@ -11,8 +12,8 @@ import (
 	"github.com/p7chkn/go_api/models"
 )
 
-func main() {
-
+func returnUsers(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("endpoint hit: /all")
 	ctx := context.Background()
 	conn, err := pgx.Connect(ctx, "postgresql://postgres:postgres@127.0.0.1:5432/p7chkn")
 	if err != nil {
@@ -25,12 +26,5 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	for _, value := range users {
-		b, err := json.Marshal(value)
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(string(b))
-	}
-
+	json.NewEncoder(w).Encode(users)
 }
