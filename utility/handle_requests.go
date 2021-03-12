@@ -10,6 +10,6 @@ import (
 func HandleRequests() {
 	myRouter := mux.NewRouter().StrictSlash(true)
 	myRouter.HandleFunc("/", homePage)
-	myRouter.HandleFunc("/all", returnUsers)
+	myRouter.HandleFunc("/all", users.returnUsers)
 	log.Fatal(http.ListenAndServe(":100000", myRouter))
 }
