@@ -12,8 +12,8 @@ import (
 	"github.com/p7chkn/go_api/models"
 )
 
-func returnUsers(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("endpoint hit: /all")
+func ReturnUsers(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Endpoint hit: /all")
 	ctx := context.Background()
 	conn, err := pgx.Connect(ctx, "postgresql://postgres:postgres@127.0.0.1:5432/p7chkn")
 	if err != nil {
@@ -26,5 +26,8 @@ func returnUsers(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	json.NewEncoder(w).Encode(users)
+	result := map[string][]*models.User{}
+	result["result"] = users
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(result)
 }
